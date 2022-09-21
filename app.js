@@ -27,11 +27,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/editor", editor);
 
-// app.get('/', (req, res) => {
-//     res.json({
-//         msg: "editor",
-//     });
-// });
+app.get('/', (req, res) => {
+    res.json({
+        msg: "editor",
+    });
+});
 
 // Add routes for 404 and error handling
 // Catch 404 and forward to error handler
