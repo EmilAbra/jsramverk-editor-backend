@@ -4,7 +4,7 @@ Backend codebase for editor app.
 
 ## This repo is for editor app in course jsramverk at BTH
 
-Made with the use of Javascript and Node.js and Express.
+Made with the use of Javascript and Node.js.
 MongoDb for storing documents from the editor.
 
 ## Prerequisites
