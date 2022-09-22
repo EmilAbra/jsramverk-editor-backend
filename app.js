@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
-
 const editor = require("./routes/editor.js");
 
 const app = express();
@@ -23,13 +22,15 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use(bodyParser.json());
+app.set('json spaces', 4);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/editor", editor);
 
 app.get('/', (req, res) => {
+    const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
     res.json({
-        msg: "editor",
+        msg: "Editor app on " + url,
     });
 });
 

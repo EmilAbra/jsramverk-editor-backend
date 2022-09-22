@@ -12,7 +12,6 @@ const docs = {
         try {
             db = await database.getDb();
             const allDocs = await db.collection.find({}).toArray();
-
             return allDocs;
         } catch (error) {
             return {
@@ -66,8 +65,6 @@ const docs = {
         try {
             db = await database.getDb();
             const filter = { _id: ObjectId(body["_id"]) };
-            console.log(body);
-            console.log(filter);
             const updateDocument = {
                 name: body.name,
                 content: body.content,
