@@ -34,7 +34,9 @@ describe('Editor', () => {
                 });
         });
     });
-
+    /*
+    * Test the /GET route
+    */
     describe('GET /editor', () => {
         it('200 The database is empty', (done) => {
             chai.request(server)
@@ -49,9 +51,11 @@ describe('Editor', () => {
                 });
         });
     });
-
+    /*
+    * Test the /POST route
+    */
     describe('POST /editor', () => {
-        it('201 Creating new doc', (done) => {
+        it('201 Should create new doc', (done) => {
             let doc = {
                 name: "test-doc",
                 content: "Lorem ipsum dolor sit amet"
@@ -71,7 +75,7 @@ describe('Editor', () => {
                 });
         });
 
-        it('200 Check new dock is added', (done) => {
+        it('200 Should be added to database', (done) => {
             chai.request(server)
                 .get("/editor")
                 .end((err, res) => {
@@ -84,7 +88,7 @@ describe('Editor', () => {
                 });
         });
 
-        it('201 Creating new doc with no content', (done) => {
+        it('400 Should return errors creating new doc with no content', (done) => {
             let doc = {
                 name: "test-doc2",
                 content: ""
@@ -104,7 +108,7 @@ describe('Editor', () => {
                 });
         });
 
-        it("200 Check if latest doc wasn't added", (done) => {
+        it("200 Should not be added to database", (done) => {
             chai.request(server)
                 .get("/editor")
                 .end((err, res) => {
@@ -117,9 +121,11 @@ describe('Editor', () => {
                 });
         });
     });
-
+    /*
+    * Test the /PUT route
+    */
     describe('PUT /editor', () => {
-        it('201 Creating new doc', (done) => {
+        it('201 Should create new doc', (done) => {
             let doc = {
                 name: "test-doc2",
                 content: "Lorem ipsum dolor sit amet"
@@ -139,9 +145,9 @@ describe('Editor', () => {
                 });
         });
 
-        it('204 update existing doc', async () => {
+        it('204 should update existing doc', async () => {
             const doc = await docsModel.getOneDoc("test-doc2");
-            
+
             doc.content = "Lorem ipsum";
 
             chai.request(server)
@@ -153,7 +159,7 @@ describe('Editor', () => {
                 });
         });
 
-        it('200 Check if the updated doc is correct', (done) => {
+        it('200. Should check if the updated doc is correct', (done) => {
             chai.request(server)
                 .get("/editor/test-doc2")
                 .end((err, res) => {
