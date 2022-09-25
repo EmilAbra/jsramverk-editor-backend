@@ -75,7 +75,6 @@ const docs = {
                 { $set: updateDocument },
                 // { upsert: true },
             );
-
             return result;
         } catch (error) {
             console.error(error.message);

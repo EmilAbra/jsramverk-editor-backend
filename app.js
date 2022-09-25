@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -29,6 +29,7 @@ app.use("/editor", editor);
 
 app.get('/', (req, res) => {
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+
     res.json({
         msg: "Editor app on " + url,
     });
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 // Put this last
 app.use((req, res, next) => {
     var err = new Error("Not Found");
+    
     err.status = 404;
     next(err);
 });

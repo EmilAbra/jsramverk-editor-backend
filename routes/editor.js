@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
         return res.status(201).json({ data: result });
     } else {
         return res.status(400).json({ errors: {
-            message: "Content in editor is needed."
+            message: "Name and Content in editor is needed."
         }});
     }
 });
