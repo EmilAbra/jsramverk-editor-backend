@@ -125,28 +125,8 @@ describe('Editor', () => {
     * Test the /PUT route
     */
     describe('PUT /editor', () => {
-        it('201 Should create new doc', (done) => {
-            let doc = {
-                name: "test-doc2",
-                content: "Lorem ipsum dolor sit amet"
-            };
-
-            chai.request(server)
-                .post("/editor")
-                .send(doc)
-                .end((err, res) => {
-                    res.should.have.status(201);
-                    res.body.should.be.an("object");
-                    res.body.should.have.property("data");
-                    res.body.data.should.have.property("name");
-                    res.body.data.name.should.equal("test-doc2");
-
-                    done();
-                });
-        });
-
         it('204 should update existing doc', async () => {
-            const doc = await docsModel.getOneDoc("test-doc2");
+            const doc = await docsModel.getOneDoc("test-doc");
 
             doc.content = "Lorem ipsum";
 
@@ -159,13 +139,13 @@ describe('Editor', () => {
                 });
         });
 
-        it('200. Should check if the updated doc is correct', (done) => {
+        it('200 Should get the updated doc and has correct updated content', (done) => {
             chai.request(server)
-                .get("/editor/test-doc2")
+                .get("/editor/test-doc")
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.an("object");
-                    res.body.data.should.have.property('name').eql('test-doc2');
+                    res.body.data.should.have.property('name').eql('test-doc');
                     res.body.data.should.have.property('content').eql('Lorem ipsum');
 
                     done();
