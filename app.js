@@ -7,6 +7,7 @@ const cors = require('cors');
 const editor = require("./routes/editor.js");
 
 const app = express();
+const httpServer = require("http").createServer(app);
 
 const port = process.env.PORT || 1337;
 
@@ -35,6 +36,17 @@ app.get('/', (req, res) => {
     });
 });
 
+const io = require("socket.io")(httpServer, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
+
+io.sockets.on('connection', function(socket) {
+    console.log(socket.id); // Nått lång och slumpat
+});
+
 // Add routes for 404 and error handling
 // Catch 404 and forward to error handler
 // Put this last
@@ -46,7 +58,7 @@ app.use((req, res, next) => {
 });
 
 // Start up server
-const server = app.listen(port, () => {
+const server = httpServer.listen(port, () => {
     console.log(`editor api is listening on ${port}`);
 });
 
