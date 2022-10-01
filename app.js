@@ -8,7 +8,7 @@ const editor = require("./routes/editor.js");
 
 const app = express();
 const httpServer = require("http").createServer(app);
-
+const docsModel = require('./models/docs');
 const port = process.env.PORT || 1337;
 
 app.use(cors());
@@ -38,13 +38,32 @@ app.get('/', (req, res) => {
 
 const io = require("socket.io")(httpServer, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
 
+let throttleTimer;
+
 io.sockets.on('connection', function(socket) {
-    console.log(socket.id); // Nått lång och slumpat
+    console.log(socket.id);
+    socket.on('create', function(room) {
+        socket.join(room);
+    });
+
+    socket.on("docsData", function (data) {
+        // console.log(data.content);
+        socket.to(data["_id"]).emit("docsData", data);
+
+        clearTimeout(throttleTimer);
+        console.log("writing");
+        throttleTimer = setTimeout(function() {
+            console.log("now it should save to database")
+            if (data) {
+                docsModel.updateDoc(data);
+            }
+        }, 2000);
+    });
 });
 
 // Add routes for 404 and error handling
