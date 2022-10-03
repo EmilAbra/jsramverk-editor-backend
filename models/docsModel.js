@@ -13,7 +13,6 @@ const docs = {
             db = await database.getDb();
             const allDocs = await db.collection.find({ allowed_users: user
             }).toArray();
-            console.log(allDocs);
             return allDocs;
         } catch (error) {
             return {
@@ -49,6 +48,7 @@ const docs = {
     insertDoc: async function insertDoc(newDoc) {
         let db;
         try {
+            console.log('newdoc: ' + newDoc);
             db = await database.getDb();
 
             const result = await db.collection.insertOne(newDoc);
