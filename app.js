@@ -11,7 +11,6 @@ const app = express();
 const httpServer = require("http").createServer(app);
 const docsModel = require('./models/docsModel');
 const port = process.env.PORT || 1337;
-console.log(port);
 
 app.use(cors());
 app.options('*', cors());

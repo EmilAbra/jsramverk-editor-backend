@@ -5,10 +5,11 @@ const docsModel = require('../models/docsModel')
 const usersModel = require('../models/usersModel')
 
 router.get(
-    "/",
+    "/:user",
     (req, res, next) => usersModel.checkToken(req, res, next),
     async (req, res) => {
-        const docs = await docsModel.getAllDocs();
+        const user = req.params.user;
+        const docs = await docsModel.getAllDocs(user);
 
         return res.json({
             data: docs
@@ -16,7 +17,7 @@ router.get(
     }
 );
 
-router.get("/:name", async (req, res) => {
+router.get("/doc/:name", async (req, res) => {
     const name = req.params.name
     const docs = await docsModel.getOneDoc(name);
 
