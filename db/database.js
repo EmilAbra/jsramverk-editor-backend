@@ -6,10 +6,9 @@
 const mongo = require("mongodb").MongoClient;
 // const config = require("./config.json");
 const dbName = "editor";
-const collectionName = "docs";
 
 const database = {
-    getDb: async function getDb() {
+    getDb: async function getDb(collectionName = "docs") {
         let dsn = `mongodb+srv://texteditor:${process.env.ATLAS_PASSWORD}@cluster0.cekx6wh.mongodb.net/?retryWrites=true&w=majority`;
         // let dsn = `mongodb://localhost:27017/${dbName}`;
         console.log(process.env.NODE_ENV);

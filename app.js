@@ -5,11 +5,13 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const editor = require("./routes/editor.js");
+const auth = require("./routes/auth.js");
 
 const app = express();
 const httpServer = require("http").createServer(app);
-const docsModel = require('./models/docs');
+const docsModel = require('./models/docsModel');
 const port = process.env.PORT || 1337;
+console.log(port);
 
 app.use(cors());
 app.options('*', cors());
@@ -27,6 +29,7 @@ app.set('json spaces', 4);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/editor", editor);
+app.use("/auth", auth);
 
 app.get('/', (req, res) => {
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
@@ -38,21 +41,19 @@ app.get('/', (req, res) => {
 
 const io = require("socket.io")(httpServer, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+        origin: '*',
+        methods: ["GET", "POST", "PUT"]
     }
 });
 
 let throttleTimer;
 
 io.sockets.on('connection', function(socket) {
-    console.log(socket.id);
     socket.on('create', function(room) {
         socket.join(room);
     });
 
     socket.on("docsData", function (data) {
-        // console.log(data.content);
         socket.to(data["_id"]).emit("docsData", data);
 
         clearTimeout(throttleTimer);
