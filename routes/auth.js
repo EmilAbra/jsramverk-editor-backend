@@ -24,4 +24,13 @@ router.post(
     }
 );
 
+router.get(
+    "/user/:user",
+    async (req, res) => {
+        const userName = req.params.user;
+
+        await usersModel.getUser(res, userName);
+    }
+);
+
 module.exports = router;
