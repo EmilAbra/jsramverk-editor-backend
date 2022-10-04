@@ -24,6 +24,7 @@ const docs = {
             await db.client.close();
         }
     },
+
     getOneDoc: async function getOneDoc(name) {
         let db;
         try {
@@ -45,6 +46,7 @@ const docs = {
             await db.client.close();
         }
     },
+
     insertDoc: async function insertDoc(newDoc) {
         let db;
         try {
@@ -62,6 +64,7 @@ const docs = {
             await db.client.close();
         }
     },
+
     updateDoc: async function updateDoc(body) {
         let db;
         try {
@@ -70,12 +73,11 @@ const docs = {
             const updateDocument = {
                 name: body.name,
                 content: body.content,
+                allowed_users: body.allowed_users,
             };
-
             const result = await db.collection.updateOne(
                 filter,
                 { $set: updateDocument },
-                // { upsert: true },
             );
             return result;
         } catch (error) {
