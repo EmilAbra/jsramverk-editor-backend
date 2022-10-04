@@ -175,7 +175,39 @@ const users = {
             // Valid token send on the request
             next();
         });
-    }
+    },
+
+    getUser: async function getUser(res, userName) {
+        let db;
+        try {
+            db = await database.getDb("users");
+
+            const filter = { email: userName };
+            const keyObject = await db.collection.findOne(filter);
+
+            if (keyObject) {
+                return res.status(200).json({
+                    data: {
+                        message: "User exists."
+                    }
+                });
+            }
+
+            return res.status(401).json({
+                data: {
+                    message: "User does not exist."
+                }
+            });
+        } catch (error) {
+            return {
+                errors: {
+                    message: error.message,
+                }
+            };
+        } finally {
+            await db.client.close();
+        }
+    },
 };
 
 module.exports = users;
