@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const docsModel = require('../models/docsModel')
-const usersModel = require('../models/usersModel')
+const docsModel = require('../models/docsModel');
+const usersModel = require('../models/usersModel');
+const mailModel = require('../models/mailinviteModel');
 
 router.get(
     "/:user",
@@ -42,6 +43,15 @@ router.put("/", async (req, res) => {
     const newDoc = req.body;
     const result = await docsModel.updateDoc(newDoc);
     return res.status(204).json({ data: result });
+});
+
+router.post("/mail_invite", async (req, res) => {
+    try {
+        const result = res.json(await mailModel.sendMailInvitation(req.body));
+        return res.json({ data: result });
+        } catch (err) {
+        console.log(err);
+    }
 });
 
 module.exports = router;

@@ -1,15 +1,22 @@
 require('dotenv').config();
 
+const visual = true;
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const editor = require("./routes/editor.js");
 const auth = require("./routes/auth.js");
+const { graphqlHTTP } = require('express-graphql');
+const {
+  GraphQLSchema
+} = require("graphql");
+const RootQueryType = require("./graphql/root.js");
 
 const app = express();
 const httpServer = require("http").createServer(app);
 const docsModel = require('./models/docsModel');
+const usersModel = require('./models/usersModel');
 const port = process.env.PORT || 1337;
 
 app.use(cors());
@@ -29,6 +36,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/editor", editor);
 app.use("/auth", auth);
+
+const schema = new GraphQLSchema({
+    query: RootQueryType
+});
+// app.use('/graphql', usersModel.checkToken);
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: visual, // OBS!!! Visual är satt till true under utveckling
+}));
 
 app.get('/', (req, res) => {
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
