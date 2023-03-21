@@ -50,7 +50,6 @@ const docs = {
     insertDoc: async function insertDoc(newDoc) {
         let db;
         try {
-            console.log('newdoc: ' + newDoc);
             db = await database.getDb();
 
             const result = await db.collection.insertOne(newDoc);
