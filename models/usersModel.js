@@ -1,3 +1,8 @@
+/**
+ * Model to handle user registration and login.
+ */
+"use strict";
+
 const database = require("../db/database.js");
 
 const ObjectId = require('mongodb').ObjectId;
