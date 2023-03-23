@@ -176,7 +176,6 @@ const users = {
                     }
                 });
             }
-
             // Valid token send on the request
             next();
         });
