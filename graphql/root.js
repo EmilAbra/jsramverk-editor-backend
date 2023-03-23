@@ -2,8 +2,6 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLList,
-    GraphQLInt,
-    GraphQLNonNull
 } = require('graphql');
 
 const DocType = require("./doc.js");
@@ -18,10 +16,10 @@ const RootQueryType = new GraphQLObjectType({
             type: DocType,
             description: 'A single doc',
             args: {
-                id: { type: GraphQLString }
+                name: { type: GraphQLString }
             },
             resolve: async function(parent, args) {
-                const doc = await docs.getOneDoc(args.id);
+                const doc = await docs.getOneDoc(args.name);
 
                 return doc;
             }
@@ -29,8 +27,11 @@ const RootQueryType = new GraphQLObjectType({
         docs: {
             type: new GraphQLList(DocType),
             description: 'List of all docs',
-            resolve: async function() {
-                const allDocs = await docs.getAllDocs();
+            args: {
+                allowed_user: { type: GraphQLString }
+            },
+            resolve: async function(parent, args) {
+                const allDocs = await docs.getAllDocs(args.allowed_user);
 
                 return allDocs;
             }

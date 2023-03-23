@@ -7,12 +7,12 @@ const database = require('../db/database');
 const ObjectId = require('mongodb').ObjectId;
 
 const docs = {
-    getAllDocs: async function getAllDocs(user) {
+    getAllDocs: async function getAllDocs(email) {
+
         let db;
         try {
             db = await database.getDb();
-            const allDocs = await db.collection.find({ allowed_users: user
-            }).toArray();
+            const allDocs = await db.collection.find({ allowed_users: email}).toArray();
             return allDocs;
         } catch (error) {
             return {

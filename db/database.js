@@ -1,17 +1,16 @@
 /**
- * Database connection.
+ * Mongo DB database connection.
  */
 "use strict";
 
 const mongo = require("mongodb").MongoClient;
-// const config = require("./config.json");
 const dbName = "editor";
 
 const database = {
     getDb: async function getDb(collectionName = "docs") {
-        let dsn = `mongodb+srv://texteditor:${process.env.ATLAS_PASSWORD}@cluster0.cekx6wh.mongodb.net/?retryWrites=true&w=majority`;
-        // let dsn = `mongodb://localhost:27017/${dbName}`;
-        console.log(process.env.NODE_ENV);
+        // const dsn = `mongodb+srv://texteditor:${process.env.ATLAS_PASSWORD}@cluster0.cekx6wh.mongodb.net/?retryWrites=true&w=majority`;
+        const dsn = `mongodb://localhost:27017/${dbName}`;
+
         if (process.env.NODE_ENV === 'test') {
             dsn = "mongodb://localhost:27017/test";
         }

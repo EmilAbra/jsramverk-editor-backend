@@ -40,7 +40,7 @@ app.use("/auth", auth);
 const schema = new GraphQLSchema({
     query: RootQueryType
 });
-// app.use('/graphql', usersModel.checkToken);
+app.use('/graphql', usersModel.checkToken);
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     graphiql: visual, // OBS!!! Visual är satt till true under utveckling
