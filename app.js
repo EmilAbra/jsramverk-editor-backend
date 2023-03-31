@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const visual = true;
+const visual = false;
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
