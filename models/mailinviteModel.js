@@ -5,15 +5,16 @@
 
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const url = "http://localhost:3000/";
 
 const mail = {
-    sendMailInvitation: async function sendMailInvitation({toMailAddress, editorUrl}) {
+    sendMailInvitation: async function sendMailInvitation({toMailAddress}) {
         const msg = {
             to: toMailAddress,
             from: 'emab21@student.bth.se', // Use the email address or domain you verified above
             subject: 'BTH editor invites you to edit a document',
-            text: `${editorUrl}`,
-            html: `<strong><a href="${editorUrl}">Click this link to get access to the document.</a></strong>`,
+            text: `${url}`,
+            html: `<strong><a href="${url}">Click this link to get access to the document.</a></strong>`,
         };
 
         try {
