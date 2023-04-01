@@ -69,10 +69,13 @@ const docs = {
         try {
             db = await database.getDb();
             const filter = { _id: ObjectId(body["_id"]) };
+
             const updateDocument = {
                 name: body.name,
+                codeMode: body.codeMode,
                 content: body.content,
                 allowed_users: body.allowed_users,
+                comments: body.comments
             };
             const result = await db.collection.updateOne(
                 filter,
