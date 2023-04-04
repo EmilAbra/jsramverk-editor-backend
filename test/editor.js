@@ -11,12 +11,11 @@ chai.use(chaiHttp);
 const database = require("../db/database.js");
 const collectionName = "docs";
 
-describe('Editor', () => {
-    timeout(30000);
-    before(() => {
+describe('Editor', function() {
+    before(function() {
         return new Promise(async (resolve) => {
             const db = await database.getDb();
-
+            // console.log(db);
             db.db.listCollections(
                 { name: collectionName }
             )
@@ -40,14 +39,12 @@ describe('Editor', () => {
     * Test the /GET route
     */
     describe('GET /editor', () => {
-        it('200 The database is empty', (done) => {
+        it('200 When not finding a document', (done) => {
             chai.request(server)
-                .get("/editor")
+                .get("/editor/doc/test")
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.an("object");
-                    res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.equal(0);
 
                     done();
                 });
@@ -59,7 +56,7 @@ describe('Editor', () => {
     describe('POST /editor', () => {
         it('201 Should create new doc', (done) => {
             let doc = {
-                name: "test-doc",
+                name: "test_doc",
                 content: "Lorem ipsum dolor sit amet"
             };
 
@@ -71,7 +68,7 @@ describe('Editor', () => {
                     res.body.should.be.an("object");
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("name");
-                    res.body.data.name.should.equal("test-doc");
+                    res.body.data.name.should.equal("test_doc");
 
                     done();
                 });
@@ -79,12 +76,10 @@ describe('Editor', () => {
 
         it('200 Should be added to database', (done) => {
             chai.request(server)
-                .get("/editor")
+                .get("/editor/doc/test_doc")
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.an("object");
-                    res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.equal(1);
+                    res.body.data.should.be.an("object");
 
                     done();
                 });
@@ -92,7 +87,7 @@ describe('Editor', () => {
 
         it('400 Should return errors creating new doc with no content', (done) => {
             let doc = {
-                name: "test-doc2",
+                name: "test_doc2",
                 content: ""
             };
 
@@ -112,12 +107,11 @@ describe('Editor', () => {
 
         it("200 Should not be added to database", (done) => {
             chai.request(server)
-                .get("/editor")
+                .get("/editor/doc/test_doc2")
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.an("object");
-                    res.body.data.should.be.an("array");
-                    res.body.data.length.should.be.equal(1);
+                    chai.expect(res.body).to.be.empty;
 
                     done();
                 });
@@ -128,7 +122,7 @@ describe('Editor', () => {
     */
     describe('PUT /editor', () => {
         it('204 should update existing doc', async () => {
-            const doc = await docsModel.getOneDoc("test-doc");
+            const doc = await docsModel.getOneDoc("test_doc");
 
             doc.content = "Lorem ipsum";
 
@@ -138,18 +132,16 @@ describe('Editor', () => {
                 .end((err, res) => {
                     res.should.have.status(204);
                     res.body.should.be.an("object");
-
-                    done();
                 });
         });
 
         it('200 Should get the updated doc and has correct updated content', (done) => {
             chai.request(server)
-                .get("/editor/test-doc")
+                .get("/editor/doc/test_doc")
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.an("object");
-                    res.body.data.should.have.property('name').eql('test-doc');
+                    res.body.data.should.have.property('name').eql('test_doc');
                     res.body.data.should.have.property('content').eql('Lorem ipsum');
 
                     done();
