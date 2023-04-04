@@ -129,4 +129,4 @@ dist
 .yarn/install-state.gz
 .pnp.*sendgrid.env
 
-sendgrid.envsendgrid.env
+sendgrid.env
