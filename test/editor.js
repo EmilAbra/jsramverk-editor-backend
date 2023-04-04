@@ -12,6 +12,7 @@ const database = require("../db/database.js");
 const collectionName = "docs";
 
 describe('Editor', () => {
+    timeout(30000);
     before(() => {
         return new Promise(async (resolve) => {
             const db = await database.getDb();
@@ -27,6 +28,7 @@ describe('Editor', () => {
                 })
                 .catch(function (err) {
                     console.error(err);
+                    
                 })
                 .finally(async function () {
                     await db.client.close();
@@ -136,6 +138,8 @@ describe('Editor', () => {
                 .end((err, res) => {
                     res.should.have.status(204);
                     res.body.should.be.an("object");
+
+                    done();
                 });
         });
 
